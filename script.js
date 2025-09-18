@@ -72,49 +72,49 @@ const pizzaList = [
         nome: 'Calabresa',
         descricao: 'Mussarela, calabresa, cebola, azeitona e orégano',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 45.00, grande: 55.00, familia: 65.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
         id: 2,
         nome: 'Marguerita',
         descricao: 'Mussarela, tomate, manjericão e azeite',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 40.00, grande: 50.00, familia: 60.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
         id: 3,
         nome: 'Quatro Queijos',
         descricao: 'Mussarela, provolone, parmesão e gorgonzola',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 50.00, grande: 60.00, familia: 70.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
-        id: 3,
+        id: 4,
         nome: 'Quatro Queijos',
         descricao: 'Mussarela, provolone, parmesão e gorgonzola',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 50.00, grande: 60.00, familia: 70.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
-        id: 3,
+        id: 5,
         nome: 'Quatro Queijos',
         descricao: 'Mussarela, provolone, parmesão e gorgonzola',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 50.00, grande: 60.00, familia: 70.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
-        id: 3,
+        id: 6,
         nome: 'Quatro Queijos',
         descricao: 'Mussarela, provolone, parmesão e gorgonzola',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 50.00, grande: 60.00, familia: 70.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     {
-        id: 3,
+        id: 7,
         nome: 'Quatro Queijos',
         descricao: 'Mussarela, provolone, parmesão e gorgonzola',
         imagem: 'img/pizza grande 1.png',
-        precos: { media: 50.00, grande: 60.00, familia: 70.00 }
+        precos: { media: 33.00, grande: 40.00, familia: 53.00 }
     },
     // Adicione mais pizzas aqui com IDs e preços
 ];
@@ -122,12 +122,12 @@ const pizzaList = [
 document.addEventListener('DOMContentLoaded', () => {
     // LÓGICA DA PÁGINA DE PIZZAS
     const contentPizzas = document.querySelector('.content-pizzas');
-    if (contentPizzas) { // Verifica se estamos na página de pizzas
+    if (contentPizzas) {
         contentPizzas.innerHTML = '';
         pizzaList.forEach(pizza => {
             const pizzaItem = document.createElement('div');
             pizzaItem.classList.add('pizza-item');
-            pizzaItem.dataset.id = pizza.id; // Adiciona o ID da pizza para a navegação
+            pizzaItem.dataset.id = pizza.id;
 
             pizzaItem.innerHTML = `
                 <img src="${pizza.imagem}" alt="${pizza.nome}">
@@ -137,8 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             contentPizzas.appendChild(pizzaItem);
-
-            // Adiciona o evento de clique para a navegação
             pizzaItem.addEventListener('click', () => {
                 window.location.href = `product-details.html?id=${pizza.id}`;
             });
@@ -147,68 +145,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // LÓGICA DA PÁGINA DE DETALHES
     const containerDetails = document.querySelector('.container-details');
-    if (containerDetails) { // Verifica se estamos na página de detalhes
+    if (containerDetails) {
         const params = new URLSearchParams(window.location.search);
         const pizzaId = parseInt(params.get('id'));
-
         const selectedPizza = pizzaList.find(pizza => pizza.id === pizzaId);
-        
+
         if (selectedPizza) {
             const pizzaImage = document.querySelector('.product-image');
-            const pizzaName = document.getElementById('pizza-name');
-            const pizzaPrice = document.getElementById('pizza-price');
+            const pizzaNameElement = document.getElementById('pizza-name');
+            const edgeInfoElement = document.getElementById('edge-info');
+            const pizzaPriceElement = document.getElementById('pizza-price');
             const quantitySpan = document.getElementById('quantity');
             const decreaseBtn = document.getElementById('decrease-btn');
             const increaseBtn = document.getElementById('increase-btn');
             const sizeButtons = document.querySelectorAll('.size-options .option-button');
             const edgeButtons = document.querySelectorAll('.edge-options .option-button');
-
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
             pizzaImage.src = selectedPizza.imagem;
-            pizzaName.textContent = selectedPizza.nome;
-            let currentPrice = selectedPizza.precos.media;
-            let quantity = 1;
-
-            // Função para atualizar o preço
-            const updatePrice = () => {
-                pizzaPrice.textContent = `R$ ${ (currentPrice * quantity).toFixed(2).replace('.', ',') }`;
+            pizzaNameElement.textContent = selectedPizza.nome;
+            
+            let currentQuantity = 1;
+            let currentSize = 'media';
+            let hasEdge = true; // Variável para rastrear se a borda está ativada
+            
+            // Função para atualizar o preço e texto da borda
+            const updateDetails = () => {
+                let pricePerUnit = selectedPizza.precos[currentSize];
+                
+                // Adiciona R$ 5,00 se a borda estiver selecionada
+                if (hasEdge) {
+                    pricePerUnit += 5.00;
+                }
+                
+                pizzaPriceElement.textContent = `R$ ${(pricePerUnit * currentQuantity).toFixed(2).replace('.', ',')}`;
+                edgeInfoElement.textContent = hasEdge ? 'Com borda' : 'Sem borda';
+                quantitySpan.textContent = currentQuantity;
             };
 
-            // Evento para botões de quantidade
             decreaseBtn.addEventListener('click', () => {
-                if (quantity > 1) {
-                    quantity--;
-                    quantitySpan.textContent = quantity;
-                    updatePrice();
+                if (currentQuantity > 1) {
+                    currentQuantity--;
+                    updateDetails();
                 }
             });
 
             increaseBtn.addEventListener('click', () => {
-                quantity++;
-                quantitySpan.textContent = quantity;
-                updatePrice();
+                currentQuantity++;
+                updateDetails();
             });
 
-            // Evento para botões de tamanho
             sizeButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     sizeButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    const selectedSize = btn.dataset.size;
-                    currentPrice = selectedPizza.precos[selectedSize];
-                    updatePrice();
+                    currentSize = btn.dataset.size;
+                    updateDetails();
                 });
             });
 
-            // Evento para botões de borda (apenas visual)
             edgeButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     edgeButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
+                    
+                    // Atualiza a variável hasEdge com base no botão clicado
+                    hasEdge = btn.dataset.edge === 'com';
+                    
+                    updateDetails();
                 });
             });
 
-            // Atualiza o preço inicial
-            updatePrice();
+            checkoutBtn.addEventListener('click', () => {
+                const orderDetails = {
+                    item: selectedPizza.nome,
+                    tamanho: currentSize,
+                    borda: hasEdge ? 'Com borda' : 'Sem borda',
+                    quantidade: currentQuantity,
+                    observacao: document.getElementById('notes-input').value,
+                    // Preço final exato
+                    preco_total: (selectedPizza.precos[currentSize] + (hasEdge ? 5.00 : 0)) * currentQuantity
+                };
+                console.log('Pedido Finalizado:', orderDetails);
+                alert('Pedido finalizado! Veja os detalhes no console.');
+            });
+
+            // Inicializa a tela com as informações corretas
+            updateDetails();
+            document.querySelector('.size-options .option-button').classList.add('active');
+            document.querySelector('.edge-options .option-button[data-edge="com"]').classList.add('active');
         }
     }
 });
+
+

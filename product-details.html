@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da pizza</title>
+    <link rel="stylesheet" href="style-product-details.css">
+</head>
+<body>
+    <div class="container-details">
+        <div class="header-details">
+            <button class="back-button" onclick="window.location.href=pizzas.html">
+               <a href="pizzas.html"> <img src="img/Back Arrow.png" alt="voltar"></a>
+            </button>
+            <img class="product-image" src="img/pizza grande 1.png" alt="pizza">
+
+            <div class="options-group">
+                <div class="size-options">
+                    <button class="option-button" data-size="media">Média(6 fatias)</button>
+                    <button class="option-button" data-size="grande">Grande(8 fatias)</button>
+                    <button class="option-button" data-size="familia">Família(12 fatias)</button>
+                </div>
+                <div class="edge-options">
+                    <button class="option-button" data-edge="com">Com Borda</button>
+                    <button 
+                    class="option-button" data-edge="sem">Sem Borda</button>
+                </div>
+            </div>
+
+            <div class="pizza-info-block">
+                <div class="pizza-text-info">
+                    <h2 id="pizza-name">Calabresa</h2>
+                    <p id="edge-info">Com Borda</p>
+                </div>
+                <div class="price-and-counter">
+                    <p class="price" id="pizza-price">R$ 45,00</p>
+                    <div class="counter">
+                        <button id="decrease-btn">-</button>
+                        <span id="quantity">1</span>
+                        <button id="increase-btn">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contente-details">
+            <div class="notes-section">
+                <h3>Observação</h3>
+                <textarea id="notes-input" placeholder=""></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <a href="menu.html"><button id="continue-btn" class="continue-btn">Continuar Comprando</button></a>
+                <button id="checkout-btn" class="checkout-btn">Finalizar</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
