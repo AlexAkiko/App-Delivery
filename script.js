@@ -4,18 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const whatsappInput = document.getElementById('whatsapp');
 
     orderForm.addEventListener('submit', (event) => {
-        // Remove a validação padrão do formulário para controlarmos com JS
         event.preventDefault();
 
-        // Remove qualquer caractere não numérico do input
+        //Remove tudo que nao for numero
         const whatsappNumber = whatsappInput.value.replace(/\D/g, '');
 
-        // Valida se o número tem 11 dígitos
+        // Só será valido se o número tiver 11 numeros
         if (whatsappNumber.length !== 11) {
             alert('Por favor, insira um número de WhatsApp válido com 11 dígitos (DDD + 9 + número).');
             whatsappInput.focus();
         } else {
-            // Redireciona para a segunda página
+            // Vai para a segunda página
             window.location.href = 'menu.html'; // Substitua 'menu.html' pelo nome do arquivo da sua segunda tela
         }
     });
@@ -32,7 +31,7 @@ if (pizzaCategory) {
     });
 }
 
-// O código abaixo vai em pizzas.html para popular a lista
+// O código abaixo vai em pizzas.html para popular a lista,aqui que se adiciona as pizzas e sabores
 
 document.addEventListener('DOMContentLoaded', () => {
     const pizzaList = [
@@ -44,8 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { nome: 'Marguerita', descricao: 'Mussarela, tomate, manjericão e azeite', imagem: 'img/pizzacategoria.png' },
         { nome: 'Marguerita', descricao: 'Mussarela, tomate, manjericão e azeite', imagem: 'img/pizzacategoria.png' },
         { nome: 'Marguerita', descricao: 'Mussarela, tomate, manjericão e azeite', imagem: 'img/pizzacategoria.png' },
-        // Adicione mais pizzas conforme necessário
-    ];
+  
 
     const contentPizzas = document.querySelector('.content-pizzas');
 
